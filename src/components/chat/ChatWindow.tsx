@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import type { ChatDto } from "../../types/ChatsType";
 import { closeChat, connectToChat, disconnect, sendAdminMessage } from "../../services/websocket";
 import { historyChat } from "../../services/getChats";
+import "./chatWindowStyle.scss";
 
 interface ChatWindowProps{
     chatId: string | null;
@@ -72,129 +73,66 @@ const ChatWindow: React.FC<ChatWindowProps> = ({chatId, onChatClosed}) => {
         }
     }
 
-    if(!chatId){
-        return(
-            <div style={{
-                flex: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#f9f9f9'
-                }}>
-                <div style={{ textAlign: 'center', color: '#666' }}>
-                    <h3>Selecione um chat para responder</h3>
-                </div>
-            </div>
-        );
-    }
-
     return(
-        <div style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100vh'
-            }}>
-            <div style={{
-                padding: 16,
-                borderBottom: '1px solid #ccc',
-                backgroundColor: '#fff',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-            }}>
-                <h4 style={{ margin: 0 }}>Chat: {chatId.substring(0, 8)}...</h4>
-                <button
-                onClick={handleCloseChat}
-                disabled={!isConnected}
-                style={{
-                    background: '#f44336',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: 4,
-                    padding: '8px 16px',
-                    cursor: isConnected ? 'pointer' : 'not-allowed'
-                }}
-                >
-                Encerrar Chat
-                </button>
-            </div>
-            <div style={{
-                flex: 1,
-                overflowY: 'auto',
-                padding: 16,
-                backgroundColor: '#f9f9f9'
-            }}>
-                {messages.length === 0 ? (
-                <div style={{ textAlign: 'center', color: '#666', marginTop: 50 }}>
-                    Nenhuma mensagem ainda.
+        <div className="chat-window">
+            {!chatId ? (
+                <div className="empty-state">
+                <h3>Selecione um chat para responder</h3>
                 </div>
-                ) : (
-                messages.map((msg, index) => (
-                    <div
-                    key={index}
-                    style={{
-                        marginBottom: 12,
-                        display: 'flex',
-                        justifyContent: msg.senderType === 'ADMIN' ? 'flex-end' : 'flex-start'
-                    }}
+            ) : (
+                <>
+                <div className="chat-header">
+                    <h4>Chat: {chatId.substring(0, 8)}...</h4>
+                    <button 
+                    className="close-btn"
+                    onClick={handleCloseChat}
+                    disabled={!isConnected}
                     >
-                    <div style={{
-                        maxWidth: '70%',
-                        padding: 12,
-                        borderRadius: 8,
-                        backgroundColor: msg.senderType === 'ADMIN' ? '#2196f3' : '#fff',
-                        color: msg.senderType === 'ADMIN' ? '#fff' : '#333',
-                        boxShadow: '0 1px 2px rgba(0,0,0,0.1)'
-                    }}>
-                        <div style={{ fontSize: '0.8em', opacity: 0.8, marginBottom: 4 }}>
-                        {msg.senderType} • {new Date(msg.timestamp).toLocaleTimeString()}
+                    Encerrar Chat
+                    </button>
+                </div>
+                
+                <div className="messages-container">
+                    {messages.length === 0 ? (
+                    <div className="empty-state">
+                        Nenhuma mensagem ainda.
+                    </div>
+                    ) : (
+                    messages.map((msg, index) => (
+                        <div 
+                        key={index}
+                        className={`message ${msg.senderType === 'ADMIN' ? 'admin' : 'user'}`}
+                        >
+                        <div className="message-content">
+                            <div className="message-meta">
+                            {msg.senderType} • {new Date(msg.timestamp).toLocaleTimeString()}
+                            </div>
+                            <div className="message-text">{msg.message}</div>
                         </div>
-                        <div>{msg.message}</div>
-                    </div>
-                    </div>
-                ))
-                )}
-                <div ref={bottomRef} />
-            </div>
-            <div style={{
-                padding: 16,
-                borderTop: '1px solid #ccc',
-                backgroundColor: '#fff',
-                display: 'flex',
-                gap: 8
-            }}>
-                <input
-                value={input}
-                onChange={(e) => {console.log(e.target.value); setInput(e.target.value)}}
-                onKeyDown={handleKeyPress}
-                disabled={!isConnected}
-                style={{
-                    flex: 1,
-                    padding: 12,
-                    border: '1px solid #ccc',
-                    borderRadius: 4,
-                    fontSize: '1em'
-                }}
-                placeholder={isConnected ? "Digite sua mensagem..." : "Conectando..."}
-                />
-                <button
-                onClick={handleSend}
-                disabled={!isConnected || !input.trim()}
-                style={{
-                    padding: '12px 24px',
-                    backgroundColor: '#2196f3',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: 4,
-                    cursor: isConnected && input.trim() ? 'pointer' : 'not-allowed',
-                    opacity: isConnected && input.trim() ? 1 : 0.5
-                }}
-                >
-                Enviar
-                </button>
-            </div>
-        </div>  
+                        </div>
+                    ))
+                    )}
+                    <div ref={bottomRef} />
+                </div>
+                
+                <div className="message-input-container">
+                    <input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyPress}
+                    disabled={!isConnected}
+                    placeholder={isConnected ? "Digite sua mensagem..." : "Conectando..."}
+                    />
+                    <button
+                    onClick={handleSend}
+                    disabled={!isConnected || !input.trim()}
+                    >
+                    Enviar
+                    </button>
+                </div>
+                </>
+            )}
+        </div>
     );
 }
 
