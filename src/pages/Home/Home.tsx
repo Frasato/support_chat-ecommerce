@@ -3,6 +3,7 @@ import type { Chat } from "../../types/ChatsType";
 import { listChats } from "../../services/getChats";
 import ChatList from "../../components/openChats/ChatList";
 import ChatWindow from "../../components/chat/ChatWindow";
+import "./home.scss";
 
 const Home: React.FC = () => {
   
@@ -33,7 +34,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div style={{ display: 'flex', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
+    <div className="chat-app-container">
       <ChatList
         chats={chats}
         selectedChatId={selectedChatId}
