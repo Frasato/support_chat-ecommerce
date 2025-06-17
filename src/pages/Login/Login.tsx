@@ -28,11 +28,6 @@ const Login = () => {
 
     return(
         <section className="login-page">
-            {/* Efeito de partículas (opcional) */}
-            <div className="particles">
-                {[...Array(15)].map((_, i) => <span key={i} />)}
-            </div>
-            
             <div className="login-container">
                 <div className="login-header">
                     <div className="logo">
@@ -74,15 +69,7 @@ const Login = () => {
                     >
                         {isLoading ? 'Entrando...' : 'Entrar'}
                     </button>
-                    
-                    <a href="#" className="forgot-password">
-                        Esqueceu sua senha?
-                    </a>
                 </form>
-                
-                <div className="login-footer">
-                    Não tem uma conta? <a href="#">Cadastre-se</a>
-                </div>
             </div>
         </section>
     );
