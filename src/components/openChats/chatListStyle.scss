@@ -1,10 +1,10 @@
-@import '../../constants/styles';
+@use '../../constants/styles' as s;
 
 .chat-list {
     width: 300px;
     height: 100vh;
     overflow-y: auto;
-    background: $white;
+    background: s.$white;
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.05);
     position: relative;
     z-index: 2;
@@ -16,14 +16,14 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, rgba($white, 0.9) 0%, rgba($light-color, 0.9) 100%);
+      background: linear-gradient(135deg, rgba(s.$white, 0.9) 0%, rgba(s.$light-color, 0.9) 100%);
       z-index: -1;
     }
   
     .list-header {
       padding: 1.5rem;
-      border-bottom: 1px solid rgba($text-color, 0.1);
-      background: $white;
+      border-bottom: 1px solid rgba(s.$text-color, 0.1);
+      background: s.$white;
       text-align: center;
       position: sticky;
       top: 0;
@@ -33,15 +33,15 @@
       h3 {
         margin: 0;
         font-weight: 600;
-        color: $primary-color;
+        color: s.$primary-color;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
         
         .badge {
-          background: $primary-color;
-          color: $white;
+          background: s.$primary-color;
+          color: s.$white;
           border-radius: 50px;
           padding: 0.25rem 0.75rem;
           font-size: 0.8rem;
@@ -50,10 +50,10 @@
     }
   
     .empty-state {
-      @include flex-center;
+      @include s.flex-center;
       flex-direction: column;
       padding: 2rem;
-      color: $text-color;
+      color: s.$text-color;
       
       svg {
         font-size: 2rem;
@@ -65,7 +65,7 @@
     .chat-item {
       padding: 1.25rem 1.5rem;
       cursor: pointer;
-      border-bottom: 1px solid rgba($text-color, 0.05);
+      border-bottom: 1px solid rgba(s.$text-color, 0.05);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
@@ -77,14 +77,14 @@
         left: 0;
         width: 4px;
         height: 100%;
-        background: $primary-color;
+        background: s.$primary-color;
         transform: scaleY(0);
         transform-origin: top;
         transition: transform 0.3s ease;
       }
       
       &:hover {
-        background: rgba($primary-color, 0.05);
+        background: rgba(s.$primary-color, 0.05);
         
         &::before {
           transform: scaleY(1);
@@ -92,34 +92,34 @@
       }
       
       &.selected {
-        background: rgba($primary-color, 0.1);
+        background: rgba(s.$primary-color, 0.1);
         
         &::before {
           transform: scaleY(1);
         }
         
         .chat-id, .user-id {
-          color: $primary-color;
+          color: s.$primary-color;
         }
       }
   
       .chat-id {
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: $dark-color;
+        color: s.$dark-color;
         display: flex;
         align-items: center;
         gap: 0.5rem;
         
         &::before {
           content: '#';
-          color: $secondary-color;
+          color: s.$secondary-color;
         }
       }
   
       .user-id {
         font-size: 0.85rem;
-        color: $text-color;
+        color: s.$text-color;
         display: flex;
         align-items: center;
         gap: 0.5rem;
